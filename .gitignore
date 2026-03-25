@@ -1,0 +1,38 @@
+# ========================
+# ENV
+# ========================
+.env
+.env.*
+infra/.env
+
+# ========================
+# BACKEND (Java / Spring)
+# ========================
+backend/target/
+backend/*.log
+
+# ========================
+# FRONTEND (Next.js)
+# ========================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# ========================
+# AI SERVICE (Python)
+# ========================
+ai-service/venv/
+ai-service/__pycache__/
+ai-service/*.pyc
+
+# ========================
+# IDE
+# ========================
+.idea/
+.vscode/
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
