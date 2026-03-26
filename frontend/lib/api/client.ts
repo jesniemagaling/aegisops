@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/lib/constants";
+import { authStore } from "@/lib/auth";
 import type { ApiError, ApiResponse } from "@/types";
 
 export class ApiClientError extends Error {
@@ -26,13 +27,32 @@ export async function apiClient<T>(
 ): Promise<T> {
   const url = `${API_BASE_URL}${path}`;
 
+  const token = authStore.getToken();
+  const authHeaders: Record<string, string> = token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
+      ...authHeaders,
       ...options?.headers,
     },
     ...options,
   });
+
+  if (response.status === 401) {
+    authStore.clearAuth();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
+    throw new ApiClientError({
+      code: "ERR_UNAUTHORIZED",
+      message: "Session expired. Redirecting to login.",
+      requestId: "",
+      details: [],
+    });
+  }
 
   const body: ApiResponse<T> | ApiError = await response.json().catch(() => {
     throw new ApiClientError({
