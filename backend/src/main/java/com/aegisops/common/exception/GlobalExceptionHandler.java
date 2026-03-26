@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -61,6 +62,21 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
                 .code(ErrorCode.ERR_FORBIDDEN.getCode())
                 .message(ex.getMessage())
+                .requestId(getRequestId())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+    /**
+     * Handles Spring Security's AccessDeniedException thrown by @PreAuthorize.
+     * Returns 403 with standard error body.
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        log.warn("Access denied: {}", ex.getMessage());
+        ErrorResponse error = ErrorResponse.builder()
+                .code(ErrorCode.ERR_FORBIDDEN.getCode())
+                .message("Access denied — insufficient permissions")
                 .requestId(getRequestId())
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);

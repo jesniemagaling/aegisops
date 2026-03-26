@@ -1,5 +1,8 @@
 package com.aegisops.users.service;
+import com.aegisops.audit.service.AuditService;
 import com.aegisops.common.dto.PagedResponse;
+import com.aegisops.common.enums.AuditAction;
+import com.aegisops.common.enums.AuditEntityType;
 import com.aegisops.common.enums.UserStatus;
 import com.aegisops.common.exception.BusinessException;
 import com.aegisops.common.exception.ErrorCode;
@@ -38,12 +41,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuditService auditService;
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       AuditService auditService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.auditService = auditService;
     }
     // -----------------------------------------------------------------------
     // Write operations
@@ -73,6 +79,10 @@ public class UserService {
         }
         User saved = userRepository.save(user);
         log.info("User created [id={}]", saved.getId());
+
+        auditService.logAction(AuditEntityType.USER, saved.getId(), AuditAction.CREATE,
+                "Created user with email " + email);
+
         return toResponse(saved);
     }
     @Transactional
@@ -86,6 +96,10 @@ public class UserService {
         }
         User saved = userRepository.save(user);
         log.info("User updated [id={}]", saved.getId());
+
+        auditService.logAction(AuditEntityType.USER, saved.getId(), AuditAction.UPDATE,
+                "Updated user " + saved.getEmail());
+
         return toResponse(saved);
     }
     @Transactional
@@ -103,6 +117,10 @@ public class UserService {
         ));
         User saved = userRepository.save(user);
         log.info("Roles replaced for user [id={}]: {}", userId, distinctIds);
+
+        auditService.logAction(AuditEntityType.USER, saved.getId(), AuditAction.UPDATE_ROLES,
+                "Roles updated for user " + saved.getEmail() + ", roleIds=" + distinctIds);
+
         return toResponse(saved);
     }
     // -----------------------------------------------------------------------
