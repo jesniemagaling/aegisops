@@ -1,16 +1,21 @@
 "use client";
 
 import { useSession } from "@/hooks";
+import { AppLayout } from "@/components/layout";
 
 export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { user, loading, logout } = useSession();
+  const { user, loading } = useSession();
 
   if (loading) {
-    return <div>Loading session...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center bg-background text-[13px] text-muted-foreground">
+        Loading session...
+      </div>
+    );
   }
 
   if (!user) {
@@ -18,14 +23,8 @@ export default function DashboardLayout({
   }
 
   return (
-    <div>
-      <header>
-        <span>{user.fullName}</span>
-        <button type="button" onClick={logout}>
-          Logout
-        </button>
-      </header>
-      <main>{children}</main>
-    </div>
+    <AppLayout userName={user.fullName} userRole={user.roles[0] ?? "User"}>
+      {children}
+    </AppLayout>
   );
 }
