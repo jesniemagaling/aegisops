@@ -1,0 +1,109 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  ArrowLeftRight,
+  GitCompare,
+  AlertTriangle,
+  Sparkles,
+  ScrollText,
+  Settings,
+  Shield,
+  type LucideIcon,
+} from "lucide-react";
+
+const navItems: { href: string; icon: LucideIcon; label: string }[] = [
+  { href: "/", icon: LayoutDashboard, label: "Dashboard" },
+  { href: "/transactions", icon: ArrowLeftRight, label: "Transactions" },
+  { href: "/reconciliation", icon: GitCompare, label: "Reconciliation" },
+  { href: "/alerts", icon: AlertTriangle, label: "Alerts" },
+  { href: "/ai", icon: Sparkles, label: "AI Copilot" },
+  { href: "/audit", icon: ScrollText, label: "Audit Logs" },
+  { href: "/admin", icon: Settings, label: "Admin" },
+];
+
+interface SidebarProps {
+  userName: string;
+  userRole: string;
+}
+
+export function Sidebar({ userName, userRole }: SidebarProps) {
+  const pathname = usePathname();
+
+  function isActive(href: string): boolean {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  }
+
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  return (
+    <aside className="w-[240px] min-w-[240px] bg-sidebar border-r border-sidebar-border flex flex-col">
+      {/* Logo */}
+      <div className="h-14 flex items-center gap-2.5 px-6">
+        <div className="w-8 h-8 rounded-[10px] bg-primary flex items-center justify-center">
+          <Shield className="w-4 h-4 text-white" />
+        </div>
+        <span className="text-[15px] tracking-tight text-foreground font-semibold">
+          AegisOps
+        </span>
+      </div>
+
+      <div className="px-5 mb-2">
+        <div className="h-px bg-sidebar-border" />
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 py-1 px-3 flex flex-col gap-0.5">
+        {navItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] transition-all duration-150 ${
+                active
+                  ? "bg-primary/[0.08] text-primary font-medium"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-foreground font-normal"
+              }`}
+            >
+              <item.icon
+                className="w-[18px] h-[18px] shrink-0"
+                strokeWidth={active ? 2 : 1.75}
+              />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="px-5 mb-2">
+        <div className="h-px bg-sidebar-border" />
+      </div>
+
+      {/* User */}
+      <div className="px-4 py-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-[11px] text-primary shrink-0 font-semibold">
+            {initials}
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="text-[12px] text-foreground truncate font-medium">
+              {userName}
+            </span>
+            <span className="text-[11px] text-muted-foreground">
+              {userRole}
+            </span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}
