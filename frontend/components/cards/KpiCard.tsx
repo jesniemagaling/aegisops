@@ -20,7 +20,7 @@ export function KpiCard({
   return (
     <div
       onClick={onClick}
-      className={`bg-card rounded-xl p-5 flex flex-col gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)] transition-all duration-200 ${onClick ? "cursor-pointer hover:shadow-[0_4px_12px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] hover:-translate-y-0.5 active:translate-y-0" : ""}`}
+      className={`bg-card rounded-xl p-5 flex flex-col gap-3 card-shadow transition-all duration-200 ${onClick ? "cursor-pointer hover:shadow-md hover:-translate-y-0.5 active:translate-y-0" : ""}`}
     >
       <span className="text-[11px] text-muted-foreground uppercase tracking-wider">
         {title}
@@ -34,12 +34,12 @@ export function KpiCard({
         </span>
         {change && (
           <span
-            className={`flex items-center gap-1 text-[11px] pb-0.5 font-medium ${
+            className={`flex items-center gap-1 text-[11px] pb-0.5 font-medium px-2 py-0.5 rounded-full ${
               trend === "up"
-                ? "text-emerald-600"
+                ? "text-emerald-600 bg-emerald-500/10"
                 : trend === "down"
-                  ? "text-red-500"
-                  : "text-muted-foreground"
+                  ? "text-red-500 bg-red-500/10"
+                  : "text-muted-foreground bg-muted"
             }`}
           >
             {trend === "up" ? (

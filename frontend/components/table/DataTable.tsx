@@ -52,9 +52,17 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   if (loading) {
     return (
-      <div className="bg-card rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
-        <div className="flex h-48 items-center justify-center text-[12px] text-muted-foreground">
-          Loading...
+      <div className="bg-card rounded-xl card-shadow">
+        <div className="p-4 space-y-3">
+          <div className="h-8 bg-muted rounded-lg animate-pulse" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex gap-4">
+              <div className="h-6 bg-muted rounded-lg animate-pulse flex-[2]" />
+              <div className="h-6 bg-muted rounded-lg animate-pulse flex-[3]" />
+              <div className="h-6 bg-muted rounded-lg animate-pulse flex-1" />
+              <div className="h-6 bg-muted rounded-lg animate-pulse flex-1" />
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -62,7 +70,7 @@ export function DataTable<T>({
 
   if (data.length === 0) {
     return (
-      <div className="bg-card rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+      <div className="bg-card rounded-xl card-shadow">
         <div className="flex h-48 items-center justify-center text-[12px] text-muted-foreground">
           {emptyMessage}
         </div>
@@ -79,7 +87,7 @@ export function DataTable<T>({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="bg-card rounded-xl overflow-auto shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+      <div className="bg-card rounded-xl overflow-auto card-shadow">
         <table className="w-full text-[12px]">
           <thead className="sticky top-0 bg-card z-10 shadow-[0_1px_0_0_var(--border)]">
             <tr className="text-muted-foreground">
@@ -142,7 +150,7 @@ export function DataTable<T>({
               type="button"
               disabled={pagination.page <= 1}
               onClick={() => onPageChange(pagination.page - 1)}
-              className="p-1.5 rounded-[8px] hover:bg-muted transition-colors disabled:opacity-40"
+              className="p-1.5 rounded-lg hover:bg-muted transition-colors disabled:opacity-40"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -160,7 +168,7 @@ export function DataTable<T>({
                     key={p}
                     type="button"
                     onClick={() => onPageChange(p)}
-                    className={`min-w-[32px] h-8 rounded-[8px] text-[12px] transition-colors ${
+                    className={`min-w-[32px] h-8 rounded-lg text-[12px] transition-colors ${
                       p === pagination.page
                         ? "bg-primary text-primary-foreground shadow-sm"
                         : "hover:bg-muted"
@@ -174,7 +182,7 @@ export function DataTable<T>({
               type="button"
               disabled={pagination.page >= pagination.totalPages}
               onClick={() => onPageChange(pagination.page + 1)}
-              className="p-1.5 rounded-[8px] hover:bg-muted transition-colors disabled:opacity-40"
+              className="p-1.5 rounded-lg hover:bg-muted transition-colors disabled:opacity-40"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

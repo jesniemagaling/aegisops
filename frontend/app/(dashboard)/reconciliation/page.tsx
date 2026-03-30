@@ -4,6 +4,14 @@ import { useState } from "react";
 import { StatusBadge } from "@/components/ui";
 import { KpiCard } from "@/components/cards";
 import { Plus, Play, Eye } from "lucide-react";
+import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const runs = [
   {
@@ -100,9 +108,10 @@ const reviewQueue = [
 export default function ReconciliationPage() {
   const [view, setView] = useState<"runs" | "queue">("runs");
   const [showCreate, setShowCreate] = useState(false);
+  const [recoSource, setRecoSource] = useState("SAP");
+  const [recoTarget, setRecoTarget] = useState("Oracle");
 
-  const cardClass =
-    "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]";
+  const cardClass = "card-shadow";
 
   return (
     <div className="flex flex-col gap-6 h-full">
@@ -110,7 +119,7 @@ export default function ReconciliationPage() {
         <h2>Reconciliation</h2>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-1.5 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-[10px] hover:bg-primary/90 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.1)]"
+          className="flex items-center gap-1.5 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
         >
           <Plus className="w-3.5 h-3.5" /> New Run
         </button>
@@ -135,22 +144,32 @@ export default function ReconciliationPage() {
               <label className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-2 font-medium">
                 Source System
               </label>
-              <select className="w-full bg-background border border-border/50 rounded-[10px] px-2.5 py-2 text-[12px] text-foreground">
-                <option>SAP</option>
-                <option>Oracle</option>
-                <option>Stripe</option>
-                <option>Plaid</option>
-              </select>
+              <Select value={recoSource} onValueChange={setRecoSource}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="SAP">SAP</SelectItem>
+                  <SelectItem value="Oracle">Oracle</SelectItem>
+                  <SelectItem value="Stripe">Stripe</SelectItem>
+                  <SelectItem value="Plaid">Plaid</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-2 font-medium">
                 Target System
               </label>
-              <select className="w-full bg-background border border-border/50 rounded-[10px] px-2.5 py-2 text-[12px] text-foreground">
-                <option>Oracle</option>
-                <option>SAP</option>
-                <option>Internal</option>
-              </select>
+              <Select value={recoTarget} onValueChange={setRecoTarget}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Oracle">Oracle</SelectItem>
+                  <SelectItem value="SAP">SAP</SelectItem>
+                  <SelectItem value="Internal">Internal</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="text-[10px] text-muted-foreground uppercase tracking-wider block mb-2 font-medium">
@@ -160,11 +179,19 @@ export default function ReconciliationPage() {
                 type="text"
                 defaultValue="Last 24 hours"
                 readOnly
-                className="w-full bg-background border border-border/50 rounded-[10px] px-2.5 py-2 text-[12px] text-foreground"
+                className="w-full bg-background border border-border/50 rounded-lg px-2.5 py-2 text-[12px] text-foreground"
               />
             </div>
             <div className="flex items-end">
-              <button className="flex items-center gap-1.5 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-[10px] hover:bg-primary/90 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
+              <button
+                onClick={() => {
+                  toast.success("Reconciliation run started", {
+                    description: "Run ID will appear in history when complete.",
+                  });
+                  setShowCreate(false);
+                }}
+                className="flex items-center gap-1.5 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
+              >
                 <Play className="w-3 h-3" /> Start Run
               </button>
             </div>
@@ -299,7 +326,14 @@ export default function ReconciliationPage() {
                     <StatusBadge status={r.status} size="xs" />
                   </td>
                   <td className="px-4 py-3">
-                    <button className="px-3 py-1 text-[11px] bg-primary/[0.06] text-primary rounded-[8px] hover:bg-primary/[0.12] transition-colors font-medium">
+                    <button
+                      onClick={() =>
+                        toast.info(`Reviewing ${r.txnId}`, {
+                          description: "Opening transaction for review...",
+                        })
+                      }
+                      className="px-3 py-1 text-[11px] bg-primary/[0.06] text-primary rounded-lg hover:bg-primary/[0.12] transition-colors font-medium"
+                    >
                       Review
                     </button>
                   </td>

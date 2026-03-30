@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { StatusBadge } from "@/components/ui";
 import { Filter, X } from "lucide-react";
+import { toast } from "sonner";
 
 const logs = [
   {
@@ -103,17 +104,26 @@ const actionColors: Record<string, string> = {
 };
 
 export default function AuditLogsPage() {
+  const [showFilters, setShowFilters] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const selectedLog = logs.find((l) => l.id === selected);
 
-  const cardClass =
-    "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]";
+  const cardClass = "card-shadow";
 
   return (
     <div className="flex flex-col gap-6 h-full">
       <div className="flex items-center justify-between">
         <h2>Audit Logs</h2>
-        <button className="flex items-center gap-1.5 px-3.5 py-2 text-[12px] bg-card rounded-[10px] hover:bg-muted border border-border/50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+        <button
+          onClick={() => {
+            setShowFilters(!showFilters);
+            if (!showFilters)
+              toast.info("Filter panel opened", {
+                description: "Advanced filters coming soon.",
+              });
+          }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-[12px] bg-card rounded-lg hover:bg-muted border border-border/50 transition-all card-shadow hover:shadow-md"
+        >
           <Filter className="w-3.5 h-3.5" /> Filters
         </button>
       </div>
@@ -185,7 +195,7 @@ export default function AuditLogsPage() {
               </span>
               <button
                 onClick={() => setSelected(null)}
-                className="p-1.5 hover:bg-muted rounded-[8px] transition-colors"
+                className="p-1.5 hover:bg-muted rounded-lg transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

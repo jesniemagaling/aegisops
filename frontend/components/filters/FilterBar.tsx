@@ -1,6 +1,13 @@
 "use client";
 
 import { X, Filter } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface FilterOption {
   key: string;
@@ -63,26 +70,30 @@ export function FilterBar({
 
       {/* Advanced Filters Panel */}
       {showFilters && (
-        <div className="bg-card rounded-xl p-5 grid grid-cols-5 gap-4 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+        <div className="bg-card rounded-xl p-5 grid grid-cols-5 gap-4 card-shadow animate-in fade-in-0 slide-in-from-top-2 duration-200">
           {filterOptions.map((opt) => (
             <div key={opt.key}>
               <label className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2 block font-medium">
                 {opt.label}
               </label>
-              <select
-                className="w-full bg-background border border-border/50 rounded-[10px] px-2.5 py-2 text-[12px] text-foreground transition-colors hover:border-border"
+              <Select
                 value={filters[opt.key] || ""}
-                onChange={(e) =>
-                  onChange({ ...filters, [opt.key]: e.target.value })
+                onValueChange={(val) =>
+                  onChange({ ...filters, [opt.key]: val })
                 }
               >
-                <option value="">All</option>
-                {opt.options.map((o) => (
-                  <option key={o} value={o}>
-                    {o.replace(/_/g, " ")}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All</SelectItem>
+                  {opt.options.map((o) => (
+                    <SelectItem key={o} value={o}>
+                      {o.replace(/_/g, " ")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           ))}
         </div>
@@ -101,7 +112,7 @@ export function FilterToggleButton({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1.5 px-3.5 py-2 text-[12px] bg-card rounded-[10px] hover:bg-muted transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-border/50"
+      className="flex items-center gap-1.5 px-3.5 py-2 text-[12px] bg-card rounded-lg hover:bg-muted transition-all card-shadow hover:shadow-md border border-border/50"
     >
       <Filter className="w-3.5 h-3.5" /> Filters
       {activeCount > 0 && (

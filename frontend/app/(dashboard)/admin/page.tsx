@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { StatusBadge } from "@/components/ui";
 import { Plus, Edit2, Trash2, Server, Users, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
 
 const users = [
   {
@@ -133,14 +134,22 @@ const adminTabs = [
 export default function AdminPage() {
   const [tab, setTab] = useState<"users" | "roles" | "sources">("users");
 
-  const cardClass =
-    "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]";
+  const cardClass = "card-shadow";
 
   return (
     <div className="flex flex-col gap-6 h-full">
       <div className="flex items-center justify-between">
         <h2>Admin</h2>
-        <button className="flex items-center gap-1.5 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-[10px] hover:bg-primary/90 transition-colors shadow-sm">
+        <button
+          onClick={() => {
+            const label =
+              tab === "users" ? "User" : tab === "roles" ? "Role" : "Source";
+            toast.info(`Add ${label}`, {
+              description: `${label} creation dialog coming soon.`,
+            });
+          }}
+          className="flex items-center gap-1.5 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
+        >
           <Plus className="w-3.5 h-3.5" />{" "}
           {tab === "users"
             ? "Add User"
@@ -212,10 +221,24 @@ export default function AdminPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-0.5">
-                      <button className="p-1.5 hover:bg-muted rounded-[8px] transition-colors">
+                      <button
+                        onClick={() =>
+                          toast.info(`Editing ${u.name}`, {
+                            description: "User edit dialog coming soon.",
+                          })
+                        }
+                        className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+                      >
                         <Edit2 className="w-3.5 h-3.5 text-muted-foreground" />
                       </button>
-                      <button className="p-1.5 hover:bg-red-50 rounded-[8px] transition-colors">
+                      <button
+                        onClick={() =>
+                          toast.error(`Delete ${u.name}?`, {
+                            description: "This action cannot be undone.",
+                          })
+                        }
+                        className="p-1.5 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"
+                      >
                         <Trash2 className="w-3.5 h-3.5 text-muted-foreground hover:text-red-500" />
                       </button>
                     </div>
@@ -297,7 +320,14 @@ export default function AdminPage() {
                     {s.records}
                   </td>
                   <td className="px-4 py-3">
-                    <button className="p-1.5 hover:bg-muted rounded-[8px] transition-colors">
+                    <button
+                      onClick={() =>
+                        toast.info(`Editing ${s.name} connector`, {
+                          description: "Connector settings dialog coming soon.",
+                        })
+                      }
+                      className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+                    >
                       <Edit2 className="w-3.5 h-3.5 text-muted-foreground" />
                     </button>
                   </td>

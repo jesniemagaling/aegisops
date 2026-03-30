@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Download } from "lucide-react";
+import { toast } from "sonner";
 import { getTransactions } from "@/lib/api";
 import { useApi } from "@/hooks";
 import { DataTable, type Column } from "@/components/table";
@@ -177,7 +178,14 @@ export default function TransactionsPage() {
             activeCount={activeFilterCount}
             onClick={() => setShowFilters(!showFilters)}
           />
-          <Button variant="outline">
+          <Button
+            variant="outline"
+            onClick={() => {
+              toast.success("Export started", {
+                description: `Exporting ${data?.totalItems ?? 0} transactions as CSV...`,
+              });
+            }}
+          >
             <Download className="w-3.5 h-3.5" /> Export
           </Button>
         </div>

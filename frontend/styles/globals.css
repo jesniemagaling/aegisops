@@ -123,6 +123,7 @@
 
   html {
     font-size: var(--font-size);
+    scroll-behavior: smooth;
   }
 
   body {
@@ -138,22 +139,24 @@
 
   h1 {
     font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
   }
   h2 {
     font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
   }
   h3 {
     font-size: 1.125rem;
-    font-weight: 500;
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: 1.4;
   }
   h4 {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.5;
   }
 
@@ -168,7 +171,7 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border);
@@ -176,4 +179,28 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted-foreground);
+}
+
+/* Card shadow utility */
+.card-shadow {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+.dark .card-shadow {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
 }

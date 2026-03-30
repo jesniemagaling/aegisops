@@ -12,6 +12,7 @@ import {
   Sparkles,
   AlertTriangle,
 } from "lucide-react";
+import { toast } from "sonner";
 import type { Transaction } from "@/types";
 
 const tabs = [
@@ -23,16 +24,15 @@ const tabs = [
   "Audit History",
 ];
 
-const cardClass =
-  "bg-card rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]";
+const cardClass = "bg-card rounded-xl p-6 card-shadow";
 
-/* ── placeholder data (replaced once API endpoints are wired) ── */
+/* â”€â”€ placeholder data (replaced once API endpoints are wired) â”€â”€ */
 
 const validationResults = [
   {
     rule: "Amount Range Check",
     result: "PASS",
-    detail: "Amount within expected range (100–50,000 EUR)",
+    detail: "Amount within expected range (100â€“50,000 EUR)",
   },
   {
     rule: "Currency Format",
@@ -132,7 +132,7 @@ const rawPayload = `{
   ]
 }`;
 
-/* ── page component ── */
+/* â”€â”€ page component â”€â”€ */
 
 export default function TransactionDetailPage() {
   const params = useParams<{ id: string }>();
@@ -157,7 +157,7 @@ export default function TransactionDetailPage() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center text-[12px] text-muted-foreground">
-        Loading transaction…
+        Loading transactionâ€¦
       </div>
     );
   }
@@ -176,7 +176,7 @@ export default function TransactionDetailPage() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => router.push("/transactions")}
-          className="p-2 rounded-[10px] hover:bg-muted transition-colors"
+          className="p-2 rounded-lg hover:bg-muted transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
@@ -190,13 +190,34 @@ export default function TransactionDetailPage() {
           </div>
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <button className="px-4 py-2 text-[12px] bg-card rounded-[10px] hover:bg-muted border border-border/50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <button
+            onClick={() =>
+              toast.info("Assigning transaction...", {
+                description: "Transaction will be assigned to an analyst.",
+              })
+            }
+            className="px-4 py-2 text-[12px] bg-card rounded-lg hover:bg-muted border border-border/50 transition-all card-shadow hover:shadow-md"
+          >
             Assign
           </button>
-          <button className="px-4 py-2 text-[12px] bg-card rounded-[10px] hover:bg-muted border border-border/50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <button
+            onClick={() =>
+              toast.warning("Escalating transaction...", {
+                description: "This will notify the team lead.",
+              })
+            }
+            className="px-4 py-2 text-[12px] bg-card rounded-lg hover:bg-muted border border-border/50 transition-all card-shadow hover:shadow-md"
+          >
             Escalate
           </button>
-          <button className="px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-[10px] hover:bg-primary/90 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
+          <button
+            onClick={() =>
+              toast.success("Transaction resolved", {
+                description: "Status updated to RESOLVED.",
+              })
+            }
+            className="px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
+          >
             Resolve
           </button>
         </div>
@@ -252,7 +273,7 @@ export default function TransactionDetailPage() {
                 <span className="text-foreground font-medium">
                   rounding difference in currency conversion
                 </span>
-                . SAP applied EUR→USD at 1.0834 while Oracle used 1.0821.
+                . SAP applied EURâ†’USD at 1.0834 while Oracle used 1.0821.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Similar pattern observed in{" "}
@@ -261,7 +282,7 @@ export default function TransactionDetailPage() {
                 </span>{" "}
                 this week.
               </p>
-              <div className="bg-violet-500/[0.06] border border-violet-500/10 rounded-[10px] p-3.5 mt-3">
+              <div className="bg-violet-500/[0.06] border border-violet-500/10 rounded-lg p-3.5 mt-3">
                 <span className="text-[11px] text-violet-600 font-medium">
                   Suggested Action
                 </span>
@@ -286,7 +307,12 @@ export default function TransactionDetailPage() {
               ].map((action) => (
                 <button
                   key={action}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted rounded-[8px] transition-colors"
+                  onClick={() =>
+                    toast.info(`Opening ${action}...`, {
+                      description: "Redirecting to external system.",
+                    })
+                  }
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
                 >
                   <ExternalLink className="w-3 h-3 shrink-0" /> {action}
                 </button>
@@ -299,7 +325,7 @@ export default function TransactionDetailPage() {
   );
 }
 
-/* ── Tab components ── */
+/* â”€â”€ Tab components â”€â”€ */
 
 function OverviewTab({ tx }: { tx: Transaction }) {
   return (
@@ -338,7 +364,7 @@ function OverviewTab({ tx }: { tx: Transaction }) {
               1 field mismatch found
             </span>
           </div>
-          <div className="grid grid-cols-3 gap-3 text-[12px] bg-muted/40 rounded-[10px] p-4">
+          <div className="grid grid-cols-3 gap-3 text-[12px] bg-muted/40 rounded-lg p-4">
             <div>
               <span className="text-[11px] text-muted-foreground block mb-1">
                 Field
@@ -378,11 +404,17 @@ function RawPayloadTab() {
         <h4 className="text-[13px] text-foreground font-medium">
           Source Payload
         </h4>
-        <button className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors px-2.5 py-1 rounded-[8px] hover:bg-muted">
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(rawPayload);
+            toast.success("Copied to clipboard");
+          }}
+          className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors px-2.5 py-1 rounded-lg hover:bg-muted"
+        >
           <Copy className="w-3 h-3" /> Copy
         </button>
       </div>
-      <pre className="text-[12px] text-emerald-600 bg-muted/50 rounded-[10px] p-5 overflow-auto font-mono leading-relaxed border border-border/30">
+      <pre className="text-[12px] text-emerald-600 bg-muted/50 rounded-lg p-5 overflow-auto font-mono leading-relaxed border border-border/30">
         {rawPayload}
       </pre>
     </div>
@@ -435,7 +467,7 @@ function ReconciliationTab() {
           Side-by-Side Comparison
         </h4>
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-muted/30 rounded-[10px] p-4">
+          <div className="bg-muted/30 rounded-lg p-4">
             <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
               Source (SAP)
             </span>
@@ -450,7 +482,7 @@ function ReconciliationTab() {
               ))}
             </div>
           </div>
-          <div className="bg-muted/30 rounded-[10px] p-4">
+          <div className="bg-muted/30 rounded-lg p-4">
             <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
               Target (Oracle)
             </span>
@@ -482,7 +514,7 @@ function AlertsTab() {
         Related Alerts
       </h4>
       <div className="space-y-2">
-        <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-[10px]">
+        <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg">
           <AlertTriangle className="w-4 h-4 text-orange-500 mt-0.5 shrink-0" />
           <div>
             <div className="flex items-center gap-2">

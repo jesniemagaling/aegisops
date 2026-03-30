@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { StatusBadge } from "@/components/ui";
 import { CheckCircle, X } from "lucide-react";
+import { toast } from "sonner";
 
 const alertsData = [
   {
@@ -80,8 +82,29 @@ const alertsData = [
 ];
 
 export default function AlertsPage() {
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<string>("all");
   const [selected, setSelected] = useState<string | null>(null);
+  const selectedRowRef = useRef<HTMLDivElement>(null);
+
+  // Auto-select alert from query param (e.g. from notification click)
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      setSelected(id);
+      setFilter("all"); // ensure the alert is visible regardless of its status
+    }
+  }, [searchParams]);
+
+  // Scroll selected alert into view
+  useEffect(() => {
+    if (selected && selectedRowRef.current) {
+      selectedRowRef.current.scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }, [selected]);
 
   const filtered =
     filter === "all"
@@ -89,8 +112,7 @@ export default function AlertsPage() {
       : alertsData.filter((a) => a.status === filter);
   const selectedAlert = alertsData.find((a) => a.id === selected);
 
-  const cardClass =
-    "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]";
+  const cardClass = "card-shadow";
 
   return (
     <div className="flex flex-col gap-6 h-full">
@@ -101,10 +123,10 @@ export default function AlertsPage() {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3.5 py-2 text-[12px] rounded-[10px] transition-all ${
+              className={`px-3.5 py-2 text-[12px] rounded-lg transition-all ${
                 filter === f
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-card text-muted-foreground hover:text-foreground border border-border/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+                  : "bg-card text-muted-foreground hover:text-foreground border border-border/50 card-shadow"
               }`}
             >
               {f === "all" ? "All" : f.charAt(0) + f.slice(1).toLowerCase()}
@@ -125,6 +147,7 @@ export default function AlertsPage() {
             {filtered.map((a) => (
               <div
                 key={a.id}
+                ref={selected === a.id ? selectedRowRef : null}
                 onClick={() => setSelected(a.id)}
                 className={`flex items-start gap-3 px-5 py-4 border-b border-border/30 cursor-pointer transition-all ${
                   selected === a.id
@@ -150,7 +173,13 @@ export default function AlertsPage() {
                   </div>
                 </div>
                 {a.status === "OPEN" && (
-                  <button className="mt-1 flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] bg-muted rounded-[8px] hover:bg-muted/70 text-muted-foreground hover:text-foreground whitespace-nowrap transition-colors">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toast.success(`Alert ${a.id} acknowledged`);
+                    }}
+                    className="mt-1 flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] bg-muted rounded-lg hover:bg-muted/70 text-muted-foreground hover:text-foreground whitespace-nowrap transition-colors"
+                  >
                     <CheckCircle className="w-3 h-3" /> Ack
                   </button>
                 )}
@@ -170,7 +199,7 @@ export default function AlertsPage() {
               </span>
               <button
                 onClick={() => setSelected(null)}
-                className="p-1.5 hover:bg-muted rounded-[8px] transition-colors"
+                className="p-1.5 hover:bg-muted rounded-lg transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -215,10 +244,23 @@ export default function AlertsPage() {
                 </div>
               </div>
               <div className="flex gap-2 pt-4 border-t border-border">
-                <button className="flex-1 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-[10px] transition-colors hover:bg-primary/90 shadow-sm">
+                <button
+                  onClick={() =>
+                    toast.success(`Alert ${selectedAlert.id} acknowledged`, {
+                      description: "Status updated to ACKNOWLEDGED.",
+                    })
+                  }
+                  className="flex-1 px-4 py-2 text-[12px] bg-primary text-primary-foreground rounded-lg transition-all hover:bg-primary/90 shadow-sm hover:shadow-md"
+                >
                   Acknowledge
                 </button>
-                <button className="flex-1 px-4 py-2 text-[12px] bg-card rounded-[10px] hover:bg-muted border border-border/50 transition-colors">
+                <button
+                  onClick={() => {
+                    toast.info(`Alert ${selectedAlert.id} closed`);
+                    setSelected(null);
+                  }}
+                  className="flex-1 px-4 py-2 text-[12px] bg-card rounded-lg hover:bg-muted border border-border/50 transition-all"
+                >
                   Close
                 </button>
               </div>

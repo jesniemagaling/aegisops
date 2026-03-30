@@ -148,7 +148,7 @@ export default function DashboardPage() {
       {/* Charts Row */}
       <div className="grid grid-cols-3 gap-4">
         {/* Volume Chart */}
-        <div className="col-span-2 bg-card rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+        <div className="col-span-2 bg-card rounded-xl p-6 card-shadow">
           <div className="flex items-center justify-between mb-6">
             <span className="text-[13px] text-foreground font-medium">
               Transaction Volume
@@ -211,7 +211,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Alerts Panel */}
-        <div className="bg-card rounded-xl p-6 flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+        <div className="bg-card rounded-xl p-6 flex flex-col card-shadow">
           <div className="flex items-center justify-between mb-5">
             <span className="flex items-center gap-2 text-[13px] text-foreground font-medium">
               <AlertTriangle className="w-4 h-4 text-amber-500" /> Active Alerts
@@ -227,7 +227,7 @@ export default function DashboardPage() {
             {alerts.map((a) => (
               <div
                 key={a.id}
-                className="flex items-start gap-3 p-3 rounded-[10px] bg-background hover:bg-muted/50 transition-colors cursor-pointer"
+                className="flex items-start gap-3 p-3 rounded-lg bg-background hover:bg-muted/50 transition-colors cursor-pointer"
               >
                 <StatusBadge status={a.severity} size="xs" />
                 <div className="flex-1 min-w-0">
@@ -247,7 +247,7 @@ export default function DashboardPage() {
       {/* Bottom Row */}
       <div className="grid grid-cols-3 gap-4">
         {/* Source Performance */}
-        <div className="col-span-2 bg-card rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+        <div className="col-span-2 bg-card rounded-xl p-6 card-shadow">
           <div className="flex items-center gap-2 mb-5">
             <Server className="w-4 h-4 text-muted-foreground" />
             <span className="text-[13px] text-foreground font-medium">
@@ -305,7 +305,7 @@ export default function DashboardPage() {
         </div>
 
         {/* AI Insights */}
-        <div className="bg-card rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_0_0_1px_rgba(0,0,0,0.02)]">
+        <div className="bg-card rounded-xl p-6 card-shadow">
           <div className="flex items-center gap-2 mb-5">
             <Sparkles className="w-4 h-4 text-violet-500" />
             <span className="text-[13px] text-foreground font-medium">
@@ -319,7 +319,7 @@ export default function DashboardPage() {
             {aiInsights.map((insight, i) => (
               <div
                 key={i}
-                className="p-3.5 rounded-[10px] bg-violet-500/[0.06] border border-violet-500/10"
+                className="p-3.5 rounded-lg bg-violet-500/[0.06] border border-violet-500/10"
               >
                 <p className="text-[12px] text-foreground font-medium">
                   {insight.title}
