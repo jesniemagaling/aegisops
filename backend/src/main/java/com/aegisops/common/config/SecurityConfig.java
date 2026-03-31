@@ -59,6 +59,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/auth/refresh", "/auth/logout").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        // Swagger / OpenAPI — plain strings resolve to PathPatternRequestMatcher
+                        // automatically in Spring Security 6.4+, which correctly matches servlet-path
+                        // (i.e. the path after the context-path /api/v1).
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/webjars/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

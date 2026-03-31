@@ -51,3 +51,21 @@ logging:
   level:
     com.aegisops: DEBUG
     org.hibernate.SQL: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    # springdoc does NOT prepend the servlet context-path to configUrl automatically,
+    # so we reference server.servlet.context-path here to build the full absolute path.
+    config-url: ${server.servlet.context-path}/v3/api-docs/swagger-config
+    url: ${server.servlet.context-path}/v3/api-docs
+    operations-sorter: method
+    tags-sorter: alpha
+    try-it-out-enabled: true
+    filter: true
+    display-request-duration: true
+  show-actuator: false
+
