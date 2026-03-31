@@ -115,7 +115,7 @@ export default function AlertsPage() {
   const cardClass = "card-shadow";
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full page-enter">
       <div className="flex items-center justify-between">
         <h2>Alerts</h2>
         <div className="flex items-center gap-2">
@@ -149,10 +149,10 @@ export default function AlertsPage() {
                 key={a.id}
                 ref={selected === a.id ? selectedRowRef : null}
                 onClick={() => setSelected(a.id)}
-                className={`flex items-start gap-3 px-5 py-4 border-b border-border/30 cursor-pointer transition-all ${
+                className={`flex items-start gap-3 px-5 py-4 border-b border-border/30 cursor-pointer transition-all duration-150 ${
                   selected === a.id
-                    ? "bg-primary/[0.03] border-l-2 border-l-primary"
-                    : "hover:bg-muted/30"
+                    ? "bg-primary/[0.04] border-l-[3px] border-l-primary pl-[17px]"
+                    : "hover:bg-muted/30 border-l-[3px] border-l-transparent"
                 }`}
               >
                 <div className="flex flex-col gap-2.5 flex-1 min-w-0">
@@ -191,8 +191,9 @@ export default function AlertsPage() {
         {/* Detail Panel */}
         {selectedAlert && (
           <div
-            className={`w-[340px] min-w-[340px] bg-card rounded-xl p-6 overflow-auto ${cardClass}`}
+            className={`w-[340px] min-w-[340px] bg-card rounded-xl p-6 overflow-auto ${cardClass} relative`}
           >
+            <div className="absolute top-0 left-0 right-0 h-[2px] gradient-accent opacity-50 rounded-t-xl" />
             <div className="flex items-center justify-between mb-6">
               <span className="text-[13px] text-foreground font-mono font-medium">
                 {selectedAlert.id}

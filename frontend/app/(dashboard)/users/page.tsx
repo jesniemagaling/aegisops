@@ -25,7 +25,7 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full page-enter">
       <div className="flex items-center justify-between">
         <h2>Users</h2>
         <div className="flex items-center gap-2 bg-background rounded-lg px-3 py-2 w-[260px] border border-border/50">

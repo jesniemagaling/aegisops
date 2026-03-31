@@ -114,7 +114,7 @@ export default function ReconciliationPage() {
   const cardClass = "card-shadow";
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full page-enter">
       <div className="flex items-center justify-between">
         <h2>Reconciliation</h2>
         <button
@@ -135,7 +135,10 @@ export default function ReconciliationPage() {
 
       {/* Create Form */}
       {showCreate && (
-        <div className={`bg-card rounded-xl p-6 ${cardClass}`}>
+        <div
+          className={`bg-card rounded-xl p-6 ${cardClass} relative overflow-hidden`}
+        >
+          <div className="absolute top-0 left-0 right-0 h-[2px] gradient-accent opacity-40" />
           <h4 className="text-[13px] mb-5 text-foreground font-medium">
             Create Reconciliation Run
           </h4>

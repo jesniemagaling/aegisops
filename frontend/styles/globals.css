@@ -153,6 +153,7 @@
     font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.4;
+    letter-spacing: -0.015em;
   }
   h4 {
     font-size: 1rem;
@@ -191,6 +192,55 @@
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+/* Elevated card for hover states */
+.card-shadow-hover {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+.dark .card-shadow-hover {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* Gradient accent line */
+.gradient-accent {
+  background: linear-gradient(135deg, var(--primary), var(--chart-2));
+}
+
+/* Glass overlay */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Subtle dot pattern background */
+.dot-pattern {
+  background-image: radial-gradient(
+    circle,
+    var(--border) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 20px 20px;
+}
+
+/* Smooth page content transitions */
+.page-enter {
+  animation: pageIn 0.25s ease-out both;
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Focus ring */

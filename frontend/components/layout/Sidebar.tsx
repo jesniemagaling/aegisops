@@ -48,7 +48,7 @@ export function Sidebar({ userName, userRole }: SidebarProps) {
     <aside className="w-[240px] min-w-[240px] bg-sidebar border-r border-sidebar-border flex flex-col">
       {/* Logo */}
       <div className="h-14 flex items-center gap-2.5 px-6">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-sm shadow-primary/25">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary via-primary/90 to-chart-2 flex items-center justify-center shadow-md shadow-primary/20">
           <Shield className="w-4 h-4 text-white" />
         </div>
         <span className="text-[15px] tracking-tight text-foreground font-semibold">
@@ -57,7 +57,7 @@ export function Sidebar({ userName, userRole }: SidebarProps) {
       </div>
 
       <div className="px-5 mb-2">
-        <div className="h-px bg-sidebar-border" />
+        <div className="h-px bg-gradient-to-r from-sidebar-border via-sidebar-border/50 to-transparent" />
       </div>
 
       {/* Navigation */}
@@ -68,12 +68,15 @@ export function Sidebar({ userName, userRole }: SidebarProps) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] transition-all duration-200 group ${
+              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] transition-all duration-200 group ${
                 active
-                  ? "bg-primary/10 text-primary font-medium shadow-sm shadow-primary/5"
+                  ? "bg-primary/10 text-primary font-medium"
                   : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-foreground font-normal"
               }`}
             >
+              {active && (
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full gradient-accent" />
+              )}
               <item.icon
                 className={`w-[18px] h-[18px] shrink-0 transition-transform duration-200 group-hover:scale-110 ${
                   active ? "" : "group-hover:text-primary/60"
@@ -81,22 +84,19 @@ export function Sidebar({ userName, userRole }: SidebarProps) {
                 strokeWidth={active ? 2 : 1.75}
               />
               {item.label}
-              {active && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
-              )}
             </Link>
           );
         })}
       </nav>
 
       <div className="px-5 mb-2">
-        <div className="h-px bg-sidebar-border" />
+        <div className="h-px bg-gradient-to-r from-transparent via-sidebar-border to-transparent" />
       </div>
 
       {/* User */}
       <div className="px-4 py-4">
         <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-[11px] text-primary shrink-0 font-semibold ring-2 ring-primary/10">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/25 to-chart-2/15 flex items-center justify-center text-[11px] text-primary shrink-0 font-semibold ring-2 ring-primary/10">
             {initials}
           </div>
           <div className="flex flex-col min-w-0">

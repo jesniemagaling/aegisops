@@ -58,7 +58,7 @@ export default function AiCopilotPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 h-full max-w-[960px]">
+    <div className="flex flex-col gap-6 h-full max-w-[960px] page-enter">
       <div className="flex items-center gap-2.5">
         <Sparkles className="w-5 h-5 text-violet-500" />
         <h2>AI Copilot</h2>
@@ -72,7 +72,8 @@ export default function AiCopilotPage() {
       </p>
 
       {/* Query Input */}
-      <div className={`${cardClass} p-6`}>
+      <div className={`${cardClass} p-6 relative overflow-hidden`}>
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-400 to-indigo-400 opacity-50" />
         <div className="flex gap-3">
           <input
             type="text"
@@ -119,7 +120,7 @@ export default function AiCopilotPage() {
       {result && !loading && (
         <div className="space-y-4 flex-1 overflow-auto">
           {/* Context bar */}
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-violet-500/[0.06] border border-violet-500/10 rounded-lg px-4 py-2.5">
+          <div className="flex items-center gap-2 text-[11px] text-muted-foreground bg-violet-500/[0.04] border border-violet-500/10 rounded-lg px-4 py-2.5">
             <Sparkles className="w-3 h-3 text-violet-500 shrink-0" />
             <span>AI-generated analysis</span>
             <span className="ml-auto">
@@ -131,7 +132,8 @@ export default function AiCopilotPage() {
           </div>
 
           {/* Summary */}
-          <div className={`${cardClass} p-6`}>
+          <div className={`${cardClass} p-6 relative overflow-hidden`}>
+            <div className="absolute top-0 left-0 right-0 h-[2px] gradient-accent opacity-40" />
             <h4 className="text-[13px] mb-2.5 text-foreground font-medium">
               Summary
             </h4>
@@ -143,7 +145,11 @@ export default function AiCopilotPage() {
           {/* Metrics */}
           <div className="grid grid-cols-4 gap-4">
             {result.metrics.map((m) => (
-              <div key={m.label} className={`${cardClass} p-4`}>
+              <div
+                key={m.label}
+                className={`${cardClass} p-4 relative overflow-hidden`}
+              >
+                <div className="absolute top-0 left-0 right-0 h-[2px] gradient-accent opacity-30" />
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
                   {m.label}
                 </span>

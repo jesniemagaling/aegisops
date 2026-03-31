@@ -20,8 +20,9 @@ export function KpiCard({
   return (
     <div
       onClick={onClick}
-      className={`bg-card rounded-xl p-5 flex flex-col gap-3 card-shadow transition-all duration-200 ${onClick ? "cursor-pointer hover:shadow-md hover:-translate-y-0.5 active:translate-y-0" : ""}`}
+      className={`relative bg-card rounded-xl p-5 flex flex-col gap-3 card-shadow transition-all duration-200 overflow-hidden ${onClick ? "cursor-pointer hover:card-shadow-hover hover:-translate-y-0.5 active:translate-y-0" : ""}`}
     >
+      <div className="absolute top-0 left-0 right-0 h-[2px] gradient-accent opacity-60" />
       <span className="text-[11px] text-muted-foreground uppercase tracking-wider">
         {title}
       </span>

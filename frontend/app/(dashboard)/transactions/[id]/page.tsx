@@ -171,7 +171,7 @@ export default function TransactionDetailPage() {
   if (!tx) return null;
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full page-enter">
       {/* Back + Header */}
       <div className="flex items-center gap-3">
         <button

@@ -169,7 +169,7 @@ export default function TransactionsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-5 h-full">
+    <div className="flex flex-col gap-5 h-full page-enter">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2>Transactions</h2>

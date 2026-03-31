@@ -77,16 +77,19 @@ export function FilterBar({
                 {opt.label}
               </label>
               <Select
-                value={filters[opt.key] || ""}
+                value={filters[opt.key] || "__all__"}
                 onValueChange={(val) =>
-                  onChange({ ...filters, [opt.key]: val })
+                  onChange({
+                    ...filters,
+                    [opt.key]: val === "__all__" ? "" : val,
+                  })
                 }
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="All" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  <SelectItem value="__all__">All</SelectItem>
                   {opt.options.map((o) => (
                     <SelectItem key={o} value={o}>
                       {o.replace(/_/g, " ")}

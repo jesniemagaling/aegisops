@@ -30,11 +30,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-[400px]">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-[-30%] right-[-10%] w-[500px] h-[500px] rounded-full bg-primary/[0.04] blur-3xl" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-chart-2/[0.04] blur-3xl" />
+
+      <div className="w-full max-w-[400px] relative z-10">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-sm shadow-primary/25 mb-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-primary/90 to-chart-2 flex items-center justify-center shadow-lg shadow-primary/20 mb-4">
             <ShieldCheck className="w-6 h-6 text-primary-foreground" />
           </div>
           <h1 className="text-[20px] font-semibold text-foreground tracking-tight">
@@ -102,7 +106,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 text-[13px] font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-all shadow-sm hover:shadow-md"
+              className="w-full py-2.5 text-[13px] font-medium bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">

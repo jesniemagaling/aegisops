@@ -111,7 +111,7 @@ export default function AuditLogsPage() {
   const cardClass = "card-shadow";
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full page-enter">
       <div className="flex items-center justify-between">
         <h2>Audit Logs</h2>
         <button
@@ -187,8 +187,9 @@ export default function AuditLogsPage() {
 
         {selectedLog && (
           <div
-            className={`w-[320px] min-w-[320px] bg-card rounded-xl p-6 overflow-auto ${cardClass}`}
+            className={`w-[340px] min-w-[340px] bg-card rounded-xl p-6 overflow-auto ${cardClass} relative`}
           >
+            <div className="absolute top-0 left-0 right-0 h-[2px] gradient-accent opacity-50 rounded-t-xl" />
             <div className="flex items-center justify-between mb-6">
               <span className="text-[13px] text-foreground font-mono font-medium">
                 {selectedLog.id}

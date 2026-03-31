@@ -137,7 +137,7 @@ export default function AdminPage() {
   const cardClass = "card-shadow";
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-6 h-full page-enter">
       <div className="flex items-center justify-between">
         <h2>Admin</h2>
         <button
@@ -254,7 +254,7 @@ export default function AdminPage() {
             {roles.map((r) => (
               <div
                 key={r.name}
-                className="border border-border/40 rounded-xl p-5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all"
+                className="border border-border/40 rounded-xl p-5 hover:card-shadow-hover transition-all duration-200"
               >
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-[13px] text-foreground font-medium">
